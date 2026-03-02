@@ -1,0 +1,93 @@
+using System.Collections.Generic;
+
+namespace U3_Actividad2_Fanny_Lopez
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("*** Sistema de Clasificación de Personas ***");
+
+            //Uso de Función para obtener la cantidad inicial
+            int cantidadPersonas = LeerEnteroPositivo("Ingrese la cantidad de personas a registrar: ");
+
+            List<string> nombresTodos = new List<string>();
+            List<int> edadesTodas = new List<int>();
+
+            //Captura de datos
+            for (int i = 0; i < cantidadPersonas; i++)
+            {
+                Console.WriteLine($"\nRegistro de la persona #{i + 1}:");
+                Console.Write("Nombre: ");
+                nombresTodos.Add(Console.ReadLine());
+
+                // Reuso de la función para la edad
+                edadesTodas.Add(LeerEnteroPositivo("Edad: "));
+            }
+
+            //Uso de Procedimiento para mostrar resultados
+            MostrarResultados(nombresTodos, edadesTodas);
+
+            Console.WriteLine("\nPresione cualquier tecla para salir...");
+            Console.ReadKey();
+        }
+
+        // --- FUNCIONES ---
+
+        // Función 1: Valida que la entrada del usuario sea un número entero positivo
+        static int LeerEnteroPositivo(string mensaje)
+        {
+            int valor;
+            while (true)
+            {
+                Console.Write(mensaje);
+                if (int.TryParse(Console.ReadLine(), out valor) && valor > 0)
+                {
+                    return valor;
+                }
+                Console.WriteLine("¡Error! Ingrese un número entero válido y no negativo.");
+            }
+        }
+
+        // Función 2: Determina si es mayor de edad (Lógica de negocio)
+        static bool EsMayorDeEdad(int edad)
+        {
+            return edad >= 18;
+        }
+
+        // --- PROCEDIMIENTOS ---
+
+        // Procedimiento: Se encarga de la salida visual de los datos
+        static void MostrarResultados(List<string> nombres, List<int> edades)
+        {
+            Console.WriteLine("\n--- Clasificación Final ---");
+
+            List<string> mayores = new List<string>();
+            List<string> menores = new List<string>();
+
+            for (int i = 0; i < nombres.Count; i++)
+            {
+                string info = $"{nombres[i]} ({edades[i]} años)";
+
+                // Usamos la función EsMayorDeEdad aquí
+                if (EsMayorDeEdad(edades[i]))
+                    mayores.Add(info);
+                else
+                    menores.Add(info);
+            }
+
+            // Mostrar listas
+            if (mayores.Count > 0)
+            {
+                Console.WriteLine("\nMayores de Edad");
+                mayores.ForEach(m => Console.WriteLine($" - {m}"));
+            }
+
+            if (menores.Count > 0)
+            {
+                Console.WriteLine("\nMenores de Edad");
+                menores.ForEach(m => Console.WriteLine($" - {m}"));
+            }
+        }
+    }
+}
